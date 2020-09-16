@@ -20,6 +20,8 @@
 
 package com.spotify.dbeam.avro;
 
+import org.postgresql.jdbc.PgResultSetMetaData;
+
 import static java.sql.Types.ARRAY;
 import static java.sql.Types.BIGINT;
 import static java.sql.Types.BINARY;
@@ -136,7 +138,13 @@ public class JdbcAvroRecord {
       case REAL:
         return resultSet -> resultSet.getFloat(column);
       default:
-        return resultSet -> resultSet.getString(column);
+        String columnType = meta.getColumnTypeName(column);
+        if (columnType.equals("interval")) {
+          // postgres interval type
+          return resultSet -> resultSet.getTime(column);
+        } else {
+          return resultSet -> resultSet.getString(column);
+        }
     }
   }
 }
