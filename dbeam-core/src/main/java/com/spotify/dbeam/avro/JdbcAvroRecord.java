@@ -20,8 +20,6 @@
 
 package com.spotify.dbeam.avro;
 
-import org.postgresql.jdbc.PgResultSetMetaData;
-
 import static java.sql.Types.ARRAY;
 import static java.sql.Types.BIGINT;
 import static java.sql.Types.BINARY;
