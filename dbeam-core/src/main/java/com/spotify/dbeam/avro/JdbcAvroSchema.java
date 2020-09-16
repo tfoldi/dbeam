@@ -131,12 +131,20 @@ public class JdbcAvroSchema {
 
       int columnType = meta.getColumnType(i);
       String typeName = JDBCType.valueOf(columnType).getName();
+      String sqlCode = String.valueOf(columnType);
+
+      // postgres interval
+      if (meta.getColumnTypeName(i).equals("interval")) {
+        typeName = "TIMESTAMP";
+        sqlCode = "93";
+      }
+
       SchemaBuilder.FieldBuilder<Schema> field =
           builder
               .name(normalizeForAvro(columnName))
               .doc(String.format("From sqlType %d %s", columnType, typeName))
               .prop("columnName", columnName)
-              .prop("sqlCode", String.valueOf(columnType))
+              .prop("sqlCode", String.valueOf(sqlCode))
               .prop("typeName", typeName);
       fieldAvroType(columnType, meta.getPrecision(i), field, useLogicalTypes);
     }
@@ -172,6 +180,7 @@ public class JdbcAvroSchema {
       case SMALLINT:
       case TINYINT:
         return field.intType().endUnion().nullDefault();
+      case 1111:
       case TIMESTAMP:
       case TIME:
       case TIME_WITH_TIMEZONE:
