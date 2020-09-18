@@ -15,6 +15,14 @@
       Top level DBeam core implementation
     </description>
 
+    <repositories>
+        <repository>
+            <id>mulesoft</id>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+        </repository>
+    </repositories>
+
+
     <dependencies>
 
       <!-- SDK -->
@@ -66,6 +74,11 @@
       <dependency>
         <groupId>com.google.cloud.sql</groupId>
         <artifactId>mysql-socket-factory</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>com.amazon.redshift</groupId>
+        <artifactId>redshift-jdbc42</artifactId>
+        <version>1.2.43.1067</version>
       </dependency>
 
       <dependency>
