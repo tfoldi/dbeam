@@ -28,6 +28,7 @@ public class JdbcConnectionUtil {
 
   private static Map<String, String> driverMapping =
       ImmutableMap.of(
+          "redshift", "com.amazon.redshift.jdbc42.Driver",
           "postgresql", "org.postgresql.Driver",
           "mysql", "com.mysql.cj.jdbc.Driver",
           "h2", "org.h2.Driver");

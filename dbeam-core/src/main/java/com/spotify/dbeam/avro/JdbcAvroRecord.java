@@ -136,7 +136,20 @@ public class JdbcAvroRecord {
       case REAL:
         return resultSet -> resultSet.getFloat(column);
       default:
-        return resultSet -> resultSet.getString(column);
+        String columnType = meta.getColumnTypeName(column);
+        if (columnType.equals("interval")) {
+          // postgres interval type
+          return resultSet -> {
+            final Timestamp timestamp = resultSet.getTimestamp(column, CALENDAR);
+            if (timestamp != null) {
+              return timestamp.getTime();
+            } else {
+              return null;
+            }
+          };
+        } else {
+          return resultSet -> resultSet.getString(column);
+        }
     }
   }
 }
